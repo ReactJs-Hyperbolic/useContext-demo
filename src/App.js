@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useContext } from 'react';
+import ClassContextComponent from './ClassContextComponent';
+import FunctionalContextComponent from './FunctionalContextComponent';
 
-function App() {
+export const ThemeContext = React.createContext();
+
+export default function App() {
+  // Boolean state to toggle between themes
+  const [darkTheme, setDarkTheme] = useState(true);
+
+  // function to change bool state onClick
+  function toggleTheme() {
+    setDarkTheme(prevDarkTheme => !prevDarkTheme);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // Wrapper for all the children & grandchildren+ which get access to the context
+    // sending in a prop called 'value' containing the context value (bool in this case).
+    // Global state for all children of the Provider
+    <ThemeContext.Provider value={darkTheme}>
+      <button onClick={toggleTheme}>Toggle Theme</button>
+      <FunctionalContextComponent />
+      <ClassContextComponent />
+    </ThemeContext.Provider>
   );
 }
-
-export default App;
